@@ -116,7 +116,7 @@
     color: hsl(210, 8%, 5%);
     font-family: "Cascadia Mono", "Segoe UI Mono", "Liberation Mono", Menlo, Monaco, Consolas, monospace;
     font-size: 13px;
-    line-height: calc((13+4)/13);
+    line-height: calc((13 + 4)/13);
     margin: 0;
     overflow: auto;
     padding: 12px;
