@@ -1,7 +1,9 @@
 export async function getQuestions(page = 1, pageSize = 5) {
 
+  const apiUrl = import.meta.env.VITE_API_URL
+
     try {
-      const response = await fetch(`http://localhost:3000/api/v1/questions?page=${page}&limit=${pageSize}`);
+      const response = await fetch(`${apiUrl}/api/v1/questions?page=${page}&limit=${pageSize}`);
       if (response.ok) {
         const data = await response.json();
         return data;
