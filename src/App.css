@@ -1,0 +1,128 @@
+.btn {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  position: relative;
+
+}
+
+.btn::after {
+  content: "";
+  position: absolute;
+  border-style: solid;
+  border-width: 4px;
+
+
+}
+
+.background-dot {
+  display: inline-block;
+  width: 6px;
+  height: 14px;
+  background-image: url(./assets/icons.svg);
+  background-position-x: -62px, -62px;
+  background-position-y: -398px, -398px;
+  background-repeat: no-repeat, no-repeat;
+  background-size: auto, auto;
+}
+
+.md-preview {
+
+  font-family: "Noto Sans";
+
+  p {
+    font-size: 17px;
+
+    code {
+      padding: 2px 4px;
+      color: hsl(210, 8%, 5%);
+      background-color: hsl(210, 8%, 90%);
+      border-radius: 4px;
+      font-size: 14px;
+      font-family: "Cascadia Mono", "Segoe UI Mono", "Liberation Mono", Menlo, Monaco, Consolas, monospace;
+    }
+
+  }
+
+  a {
+    color: lightblue;
+    text-decoration: underline;
+
+    &:hover {
+      color: violet;
+    }
+  }
+
+  blockquote {
+    color: lightskyblue;
+    margin-right: 15px;
+    margin-left: 15px;
+    padding: 12px 12px 12px 15px;
+    position: relative;
+
+    &::before {
+      background-color: hsl(210, 8%, 80%);
+      border-radius: 8px;
+      bottom: 0;
+      content: "";
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+    }
+  }
+
+  ul,
+  ol,
+  li {
+    margin: 0;
+  }
+
+  ul,
+  ol {
+    margin-left: 30px;
+  }
+
+  ol {
+    list-style-type: decimal;
+  }
+
+  ul {
+    list-style-type: disc;
+  }
+
+  li {
+    font-size: 16px;
+  }
+
+  h2 {
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 1.3;
+  }
+
+  pre {
+    scrollbar-color: hsla(0, 0%, 0%, 0.2) transparent;
+    background-color: hsl(0, 0%, 96.5%);
+    border-radius: 5px;
+    color: hsl(210, 8%, 5%);
+    font-family: "Cascadia Mono", "Segoe UI Mono", "Liberation Mono", Menlo, Monaco, Consolas, monospace;
+    font-size: 13px;
+    line-height: calc((13+4)/13);
+    margin: 0;
+    overflow: auto;
+    padding: 12px;
+
+  }
+
+
+
+}
