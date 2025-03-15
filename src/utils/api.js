@@ -1,6 +1,8 @@
+
+const apiUrl = import.meta.env.VITE_API_URL
+
 export async function getQuestions(page = 1, pageSize = 5) {
 
-  const apiUrl = import.meta.env.VITE_API_URL
 
     try {
       const response = await fetch(`${apiUrl}/api/v1/questions?page=${page}&limit=${pageSize}`);
@@ -17,7 +19,7 @@ export async function getQuestions(page = 1, pageSize = 5) {
 
 export async function getQuestionById(id) {
   try {
-    const response = await fetch(`http://localhost:3000/api/v1/questions/${id}`);
+    const response = await fetch(`${apiUrl}/api/v1/questions/${id}`);
     if (response.ok) {
       const data = await response.json();
       return data;
@@ -29,7 +31,7 @@ export async function getQuestionById(id) {
 
 export async function getQuestionsCount() {
   try {
-    const response = await fetch(`http://localhost:3000/api/v1/questions/count`);
+    const response = await fetch(`${apiUrl}/api/v1/questions/count`);
     if (response.ok) {
       const data = await response.json();
       return data;
