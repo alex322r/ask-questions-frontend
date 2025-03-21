@@ -6,7 +6,6 @@ export async function getQuestions(page = 1, pageSize = 5) {
 
     try {
       const response = await fetch(`${apiUrl}/api/v1/questions?page=${page}&limit=${pageSize}`);
-      console.log({apiUrl})
       if (response.ok) {
         const data = await response.json();
         return data;

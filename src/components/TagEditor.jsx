@@ -1,11 +1,11 @@
+/* eslint-disable react/prop-types */
 
 import { useState } from "react";
 
 
-export default function TagEditor() {
+export default function TagEditor({ tags, setTags, error, handleTagsChange }) {
 
   // const [editingTag, setEditingTag] = useState("")
-  const [tags, setTags] = useState([])
   const [tagInput, setTagInput] = useState("")
 
   const handleTagInput = function handleTagInput(e) {
@@ -29,7 +29,6 @@ export default function TagEditor() {
     //     })
     //   }
     // }
-
 
     if (newTags.length > 0) {
       setTags(prev => {
@@ -64,7 +63,9 @@ export default function TagEditor() {
   const handleTagDelete = function handleTagDelete(tag, e) {
     e.stopPropagation()
     const newTags = tags.filter(t => t !== tag)
+
     setTags(newTags)
+    handleTagsChange()
   }
 
   // const handleTagEdition = function handleTagEdition(tag, e) {
@@ -72,6 +73,17 @@ export default function TagEditor() {
   //   setEditingTag(tag)
   //   setTagInput(tag)
   // }
+
+  const handleClick = function handleClick(e) {
+    e.preventDefault()
+    if (tagInput.length > 0) {
+      setTags(prev => {
+        const uniqueTags = new Set([...prev, tagInput])
+        return [...uniqueTags]
+      })
+      setTagInput("")
+    }
+  }
 
 
   return (
@@ -111,7 +123,7 @@ export default function TagEditor() {
 
                 }
               </span>
-              <input onKeyDown={handleKeyDown} onChange={handleTagInput} value={tagInput} style={{ width: 19 + (tagInput.length > 0 ? (tagInput.length - 1) * 7 : 0) }} id="tagname-input" className={`${tags.length > 0 ? "" : "min-w-full"} focus:outline-0 w-full  pl-2 m-0 h-9  `} type="text" placeholder={` ${tags.length > 0 ? "" : "p. ej. (php json nodejs)"}`} />
+              <input onKeyDown={handleKeyDown} onClick={handleClick} onChange={handleTagInput} value={tagInput} style={{ width: 19 + (tagInput.length > 0 ? (tagInput.length - 1) * 7 : 0) }} id="tagname-input" className={`${tags.length > 0 ? "" : "min-w-full"} focus:outline-0 w-full  pl-2 m-0 h-9  `} type="text" placeholder={` ${tags.length > 0 ? "" : "p. ej. (php json nodejs)"}`} />
 
               <span>
 
@@ -131,14 +143,22 @@ export default function TagEditor() {
                 } */}
 
               </span>
+              {
+                error && <svg aria-hidden="true" className="absolute right-1 top-3 fill-red-500" width="18" height="18" viewBox="0 0 18 18"><path d="M9 17c-4.36 0-8-3.64-8-8s3.64-8 8-8 8 3.64 8 8-3.64 8-8 8M8 4v6h2V4zm0 8v2h2v-2z"></path></svg>
+              }
             </div>
 
 
           </div>
 
         </div>
+        <div id="" className="text-red-400">
+          {
+            error ? "Introduce, al menos, una etiqueta." : ""
+          }
+        </div>
       </div>
 
-    </div>
+    </div >
   )
 }

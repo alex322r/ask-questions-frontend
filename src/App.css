@@ -39,6 +39,7 @@
 
   p {
     font-size: 17px;
+    overflow-wrap: break-word;
 
     code {
       padding: 2px 4px;

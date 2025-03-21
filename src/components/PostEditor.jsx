@@ -1,10 +1,10 @@
+/* eslint-disable react/prop-types */
 import { useState, useRef, useEffect } from "react"
 import ButtonItem from "./ButtonItem"
 import { marked } from "marked"
 
-export default function PostEditor() {
+export default function PostEditor({ bodyQuestion, setBodyQuestion, errorRef, error, handleBodyChange }) {
 
-  const [bodyQuestion, setBodyQuestion] = useState("")
   const [history, setHistory] = useState([""])
   const [historyIndex, setHistoryIndex] = useState(0)
   const [linksCount, setLinksCount] = useState(1)
@@ -12,6 +12,8 @@ export default function PostEditor() {
   const [cursorPosition, setCursorPosition] = useState(null)
 
   const textareaReference = useRef(null)
+
+  const errorText = error === "empty" ? "El cuerpo de la pregunta es requerido" : error === "short" ? "El cuerpo de la pregunta debe tener al menos 30 caracteres" : error === "long" ? "El cuerpo de la pregunta debe tener menos de 300 caracteres" : ""
 
 
   const updateText = function updateText(newText) {
@@ -224,10 +226,6 @@ export default function PostEditor() {
     }
   }
 
-  const handleChange = function handleChange(e) {
-    updateText(e.target.value)
-  }
-
 
   useEffect(() => {
     if (cursorPosition !== null) {
@@ -242,7 +240,7 @@ export default function PostEditor() {
 
   return (
 
-    <div className="flex w-full mb-4.5 gap-1.25 flex-col">
+    <div ref={errorRef} className="flex w-full mb-4.5 gap-1.25 flex-col">
 
       <div className="relative">
         <label className=" cursor-pointer mb-1.25 py-0.75" htmlFor="wmd-input">
@@ -321,10 +319,18 @@ export default function PostEditor() {
           </div >
           <div className=" border-t">
             <div className="relative ">
-              <textarea ref={textareaReference} onChange={handleChange} value={bodyQuestion} className=" border-b border-x    resize-none p-2.75  h-51 w-full " name="post-text" id="wmd-input" tabIndex={101}></textarea>
+              <textarea ref={textareaReference} onChange={handleBodyChange} value={bodyQuestion} className=" border-b border-x    resize-none p-2.75  h-51 w-full " name="post-text" id="wmd-input" tabIndex={101}></textarea>
+              {
+                error !== "valid" && <svg aria-hidden="true" className="fill-red-700 absolute right-2 top-20" width="18" height="18" viewBox="0 0 18 18"><path d="M9 17c-4.36 0-8-3.64-8-8s3.64-8 8-8 8 3.64 8 8-3.64 8-8 8M8 4v6h2V4zm0 8v2h2v-2z"></path></svg>
+              }
               <div className=" border-x rounded-b-md cursor-s-resize h-3 overflow-hidden bg-gray-700 -mt-1.25 bg-[url(https://cdn.sstatic.net/Sites/es/img/sprites.svg?v=961ebb6cc2dd)] bg-no-repeat bg-[calc(50%+34px)-364px] border-b" >
 
               </div>
+            </div>
+            <div className=" text-red-400">
+              {
+                errorText
+              }
             </div>
 
           </div>
@@ -347,7 +353,7 @@ export default function PostEditor() {
 
       </div>
       {/*  TODO: LIMPIAR HTML */}
-      <div dangerouslySetInnerHTML={{ __html: marked.parse(bodyQuestion) }} className="md-preview w-full mb-4.5">
+      <div dangerouslySetInnerHTML={{ __html: marked.parse(bodyQuestion) }} className="md-preview max-w-full mb-4.5">
       </div>
 
       {/* view */}
