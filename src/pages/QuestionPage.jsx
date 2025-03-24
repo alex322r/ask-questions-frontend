@@ -7,16 +7,17 @@ import useQuestions from "../hooks/useQuestions"
 
 export default function QuestionPage() {
 
-    const {questions, loading, page, setPage} = useQuestions()
+    const { questions, loading, page, setPage } = useQuestions()
 
     return (
-        <QuestionPageContainer>
-            <QuestionsContext.Provider value={{questions, loading, page, setPage}}>
+        <QuestionsContext.Provider value={{ questions, loading, page, setPage }}>
+            <QuestionPageContainer >
                 <QuestionHeader />
                 <QuestionList />
                 <QuestionIndex numberOfPages={7} />
-            </QuestionsContext.Provider>
-        </QuestionPageContainer>
+
+            </QuestionPageContainer>
+        </QuestionsContext.Provider>
     )
 
 }

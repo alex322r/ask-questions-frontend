@@ -1,10 +1,16 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import PostEditor from "./PostEditor";
 import PostTitle from "./PostTitle";
 import TagEditor from "./TagEditor";
 import NewPostLogin from "./NewPostLogin"
-export default function AskQuestionForm() {
+import useAuth from "../hooks/useAuth";
 
+const apiUrl = import.meta.env.VITE_API_URL
+
+export default function AskQuestionForm({ errorRef }) {
+
+  const { user } = useAuth()
 
   const [title, setTitle] = useState("")
   const [bodyQuestion, setBodyQuestion] = useState("")
@@ -15,6 +21,7 @@ export default function AskQuestionForm() {
   const [bodyError, setBodyError] = useState("valid")
   const [tagsError, setTagsError] = useState(false)
   const [emailError, setEmailError] = useState("")
+  const [loading, setLoading] = useState(false)
 
   const handleTitleChange = function handleTitleChange(e) {
     const title = e.target.value
@@ -113,24 +120,70 @@ export default function AskQuestionForm() {
 
   const handleSubmit = function handleSubmit(e) {
     e.preventDefault()
-
-    console.log(validated)
+    setLoading(true)
     setBotonText("Publica tu pregunta")
     if (!validated) {
       const validForm = checkForm(title, bodyQuestion, tags)
+      if (!validForm) {
+        //scroll to top
+        errorRef.current.scrollIntoView({ behavior: "smooth" })
+      }
       setValidated(validForm)
     } else {
       const name = e.target["display-name"].value
       const email = e.target["m-address"].value
       if (checkFormUser(name, email)) {
         // enviar la pregunta
-        console.log("Enviando pregunta")
-        console.log({ title, bodyQuestion, tags, name, email })
-      } else {
-        console.log("No se puede enviar la pregunta")
+        if (user === null) {
+          fetch(apiUrl + "/api/v1/guest", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ guest_name: name }),
+            credentials: "include"
+          }).then(response => {
+            if (response.ok) {
+              return response.json()
+            } else {
+              throw new Error("Error al crear usuario")
+            }
+          }).then(() => {
+            fetch(apiUrl + "/api/v1/questions", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({ title, description: bodyQuestion }),
+              credentials: "include"
+            }).then(response => {
+              if (response.ok) {
+                return response.json()
+              } else {
+                throw new Error("Error al enviar la pregunta")
+              }
+            }).then(() => {
+              console.log("Pregunta enviada")
+              setTitle("")
+              setBodyQuestion("")
+              setTags([])
+              setValidated(false)
+              setBotonText("Revise su pregunta")
+            }).catch(error => {
+              console.error(error)
+            })
+          }).catch(error => {
+            console.error(error)
+          }
+          )
+        } else {
+          console.log("No se puede enviar la pregunta")
+        }
       }
+
     }
 
+    setLoading(false)
 
   }
 
@@ -149,7 +202,7 @@ export default function AskQuestionForm() {
             <div className="">
               <div className="flex mt-9"></div>
               <button className="mx-0.75 bg-blue-600 text-base p-2.75 cursor-pointer inline-block relative rounded-md " >
-                {botonText}
+                {loading ? "Publicando..." : botonText}
               </button>
             </div>
           </div>
@@ -160,3 +213,4 @@ export default function AskQuestionForm() {
     </div>
   )
 }
+
