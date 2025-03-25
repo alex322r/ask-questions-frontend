@@ -27,6 +27,7 @@ export default function useQuestions() {
             title: question.title,
             description: question.description,
             userId: question.user_id,
+            guestName: question.guest_name,
             views: question.view_count,
             createdAt: question.created_at,
           }})
